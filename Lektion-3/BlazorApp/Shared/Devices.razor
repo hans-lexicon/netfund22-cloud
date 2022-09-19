@@ -1,0 +1,45 @@
+﻿<div class="card">
+    <div class="card-body">
+        <div class="row card-headline mb-3">
+            <div class="col-4">DeviceId</div>
+            <div class="col-1">Status</div>
+            <div class="col-2">Placement</div>
+            <div class="col-2">Last Updated</div>
+            <div class="col-3">Measurements</div>
+        </div>
+
+        @if (devices == null)
+        {
+            <p>No devices found</p>
+        }
+        else
+        {
+            foreach (var device in devices)
+            {
+                <div class="row mb-2">
+                    <div class="col-4">@device.DeviceId</div>
+                    <div class="col-1">@device.Status</div>
+                    <div class="col-2">@device.Placement</div>
+                    <div class="col-2">@device.LastUpdated</div>
+                    <div class="col-3">
+                        <span>Temperature @device.Temperature °C</span>
+                        <span class="ms-2">Humidity @device.Humidity %</span>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private DeviceItem[]? devices;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            devices = await Http.GetFromJsonAsync<DeviceItem[]>("https://netfund22-funcapp.azurewebsites.net/api/devices");
+        }
+        catch {}
+        
+    }
+}

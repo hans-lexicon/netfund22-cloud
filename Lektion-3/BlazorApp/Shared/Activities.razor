@@ -1,0 +1,35 @@
+﻿<div class="card">
+    <div class="card-body">
+        <div class="card-title">
+            <h1>Activities</h1>
+        </div>
+
+        @if(notifications == null) 
+        {
+            <p>No notifications found</p>
+        }
+        else 
+        {
+            foreach(var notification in notifications) 
+            {
+                <div class="row mb-2">
+                    <div class="col-4">@notification.NotificationTime</div>
+                    <div class="col-8">@notification.Message</div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+@code {
+    private Notification[]? notifications;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            notifications = await Http.GetFromJsonAsync<Notification[]>("https://netfund22-funcapp.azurewebsites.net/api/activities");
+        }
+        catch{}
+    }
+}
